@@ -6,6 +6,7 @@ public class CalculateurViewModel : BaseViewModel
     private DateTime _dateNaissance = DateTime.Today.AddYears(-20);
     private string _resultat = "";
     private bool _resultatVisible;
+    public bool DateFuture => DateNaissance.Date > DateTime.Today;
 
     public string Nom
     {
@@ -16,7 +17,14 @@ public class CalculateurViewModel : BaseViewModel
     public DateTime DateNaissance
     {
         get => _dateNaissance;
-        set => SetField(ref _dateNaissance, value);
+        set
+        {
+            if (SetField(ref _dateNaissance, value))
+            {
+                OnPropertyChanged(nameof(DateFuture));
+                CalculerCommand.Rafraichir();
+            }
+        }
     }
 
     private string _message = "";
@@ -46,7 +54,7 @@ public class CalculateurViewModel : BaseViewModel
     {
         CalculerCommand = new RelayCommand(
             Calculer,
-            () => !string.IsNullOrWhiteSpace(Nom));
+            () => !string.IsNullOrWhiteSpace(Nom) && !DateFuture);
         EffacerCommand = new RelayCommand(Effacer);
     }
 
