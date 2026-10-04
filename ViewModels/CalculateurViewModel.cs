@@ -19,6 +19,14 @@ public class CalculateurViewModel : BaseViewModel
         set => SetField(ref _dateNaissance, value);
     }
 
+    private string _message = "";
+
+    public string Message
+    {
+        get => _message;
+        set => SetField(ref _message, value);
+    }
+
     public string Resultat
     {
         get => _resultat;
@@ -45,6 +53,8 @@ public class CalculateurViewModel : BaseViewModel
     {
         int age = DateTime.Today.Year - DateNaissance.Year;
         if (DateNaissance.Date > DateTime.Today.AddYears(-age)) age--;
+
+        Message = age >= 18 ? "Vous êtes majeur." : "Vous êtes mineur.";
 
         Resultat = $"{Nom}, vous avez {age} ans";
         ResultatVisible = true;
