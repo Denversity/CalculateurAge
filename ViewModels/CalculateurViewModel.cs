@@ -39,6 +39,7 @@ public class CalculateurViewModel : BaseViewModel
         set => SetField(ref _resultatVisible, value);
     }
 
+    public RelayCommand EffacerCommand { get; }
     public RelayCommand CalculerCommand { get; }
 
     public CalculateurViewModel()
@@ -46,6 +47,7 @@ public class CalculateurViewModel : BaseViewModel
         CalculerCommand = new RelayCommand(
             Calculer,
             () => !string.IsNullOrWhiteSpace(Nom));
+        EffacerCommand = new RelayCommand(Effacer);
     }
 
     // Logique métier : aucun contrôle d'interface ici
@@ -59,4 +61,13 @@ public class CalculateurViewModel : BaseViewModel
         Resultat = $"{Nom}, vous avez {age} ans";
         ResultatVisible = true;
     }
+
+    private void Effacer()
+{
+    Nom = "";
+    DateNaissance = DateTime.Today.AddYears(-20);
+    Resultat = "";
+    Message = "";
+    ResultatVisible = false;
+}
 }
